@@ -1,0 +1,9 @@
+# C:\xampp\htdocs\school-erp\.gitignore
+assets/uploads/logos/*
+assets/uploads/documents/*
+assets/uploads/students/*
+!assets/uploads/logos/.gitkeep
+!assets/uploads/documents/.gitkeep
+!assets/uploads/students/.gitkeep
+.system_generated/
+*.log
