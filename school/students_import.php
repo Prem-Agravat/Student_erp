@@ -25,10 +25,10 @@ if (isset($_GET['download_sample']) && $_GET['download_sample'] == '1') {
     
     // Sample Data Row
     fputcsv($output, [
-        'John', 'David', 'Doe', 'Male', '2012-05-15', 
-        'O+', 'john.doe@example.com', '1234567890', '123 School Lane', 'New York', 'NY', '10001', 
-        '1', '1', '1', 'ADM2026-0001', 
-        'David Doe', 'Mary Doe', '0987654321', 'david.doe@example.com'
+        'Prem', 'Ramesh', 'Agravat', 'Male', '2015-08-20', 
+        'B+', 'prem.agravat@example.com', '9876543210', '123 Ring Road', 'Rajkot', 'Gujarat', '360001', 
+        '1', '1', '1', 'ADM2025-001', 
+        'Ramesh Agravat', 'Geeta Agravat', '9876501234', 'ramesh.agravat@example.com'
     ]);
     
     fclose($output);

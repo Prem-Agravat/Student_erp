@@ -187,11 +187,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label font-semibold">School Email <span class="text-danger">*</span></label>
-                                <input type="email" name="school_email" class="form-control rounded-3" required placeholder="school@example.com">
+                                <input type="email" name="school_email" class="form-control rounded-3" required placeholder="info@school.edu.in">
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label font-semibold">School Phone <span class="text-danger">*</span></label>
-                                <input type="text" name="school_phone" class="form-control rounded-3" required placeholder="+1 (555) 123-4567">
+                                <input type="text" name="school_phone" class="form-control rounded-3" required placeholder="e.g. +91 98250 12345">
                             </div>
                             <div class="col-12">
                                 <label class="form-label font-semibold">School Address <span class="text-danger">*</span></label>
@@ -225,15 +225,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <div class="row g-3 mb-4">
                             <div class="col-md-4">
                                 <label class="form-label font-semibold">Principal Name <span class="text-danger">*</span></label>
-                                <input type="text" name="principal_name" class="form-control rounded-3" required placeholder="Dr. John Smith">
+                                <input type="text" name="principal_name" class="form-control rounded-3" required placeholder="Dr. Rajesh Patel">
                             </div>
                             <div class="col-md-4">
                                 <label class="form-label font-semibold">Principal Email <span class="text-danger">*</span></label>
-                                <input type="email" name="principal_email" class="form-control rounded-3" required placeholder="principal@example.com">
+                                <input type="email" name="principal_email" class="form-control rounded-3" required placeholder="principal@school.edu.in">
                             </div>
                             <div class="col-md-4">
                                 <label class="form-label font-semibold">Principal Phone <span class="text-danger">*</span></label>
-                                <input type="text" name="principal_phone" class="form-control rounded-3" required placeholder="Principal's Contact No">
+                                <input type="text" name="principal_phone" class="form-control rounded-3" required placeholder="e.g. +91 98250 12345">
                             </div>
                         </div>
 

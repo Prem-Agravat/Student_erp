@@ -32,7 +32,6 @@ require_once 'includes/functions.php';
                 <ul class="navbar-nav ms-auto align-items-center gap-3">
                     <li class="nav-item"><a class="nav-link" href="#features">Features</a></li>
                     <li class="nav-item"><a class="nav-link" href="#about">Why SchoolERP</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#pricing">Pricing</a></li>
                     <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle btn btn-light px-3 py-2 border rounded-pill" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -164,36 +163,6 @@ require_once 'includes/functions.php';
         </div>
     </section>
 
-    <!-- Pricing Ready Section -->
-    <section id="pricing" class="py-5 bg-white">
-        <div class="container py-5">
-            <div class="text-center mb-5 max-w-2xl mx-auto">
-                <h2 class="fw-bold mb-3">Simple, Transparent Pricing</h2>
-                <p class="text-secondary">No setup fees. Scale as your student count increases.</p>
-            </div>
-            <div class="row justify-content-center">
-                <div class="col-md-5">
-                    <div class="card border-0 shadow-lg p-5 glass-card text-center position-relative overflow-hidden">
-                        <span class="position-absolute top-0 end-0 bg-indigo text-white px-3 py-1 font-semibold rounded-bl-lg" style="font-size: 12px; background-color: #6366f1;">POPULAR</span>
-                        <h4 class="fw-bold text-indigo mb-3" style="color: #4f46e5;">Standard Plan</h4>
-                        <div class="my-4">
-                            <span class="display-5 fw-bold">$49</span>
-                            <span class="text-secondary">/month</span>
-                        </div>
-                        <ul class="list-unstyled my-4 text-start d-flex flex-column gap-3">
-                            <li><i class="fa-solid fa-circle-check text-indigo me-2"></i>1 School Registration</li>
-                            <li><i class="fa-solid fa-circle-check text-indigo me-2"></i>Unlimited Students & Standards</li>
-                            <li><i class="fa-solid fa-circle-check text-indigo me-2"></i>Full Access to All Modules</li>
-                            <li><i class="fa-solid fa-circle-check text-indigo me-2"></i>Fee & Attendance Management</li>
-                            <li><i class="fa-solid fa-circle-check text-indigo me-2"></i>Report Cards Generation</li>
-                        </ul>
-                        <a href="auth/school-register.php" class="btn btn-indigo w-100 rounded-pill py-3">Register Your School Now</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- Contact Section -->
     <section id="contact" class="py-5 bg-light">
         <div class="container py-5">
@@ -208,7 +177,7 @@ require_once 'includes/functions.php';
                         </div>
                         <div class="d-flex align-items-center gap-3">
                             <div class="bg-white text-indigo rounded-circle shadow-sm d-flex align-items-center justify-content-center" style="width: 44px; height: 44px;"><i class="fa-solid fa-phone"></i></div>
-                            <span class="text-secondary">+1 (555) 019-2834</span>
+                            <span class="text-secondary">+91 98250 12345</span>
                         </div>
                     </div>
                 </div>
@@ -217,11 +186,11 @@ require_once 'includes/functions.php';
                         <div class="row g-3">
                             <div class="col-md-6">
                                 <label class="form-label font-semibold">Your Name</label>
-                                <input type="text" class="form-control rounded-3" placeholder="John Doe">
+                                <input type="text" class="form-control rounded-3" placeholder="Prem Agravat">
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label font-semibold">Email Address</label>
-                                <input type="email" class="form-control rounded-3" placeholder="john@example.com">
+                                <input type="email" class="form-control rounded-3" placeholder="prem@example.com">
                             </div>
                             <div class="col-12">
                                 <label class="form-label font-semibold">Message</label>
