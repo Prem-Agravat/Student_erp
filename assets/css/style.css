@@ -133,7 +133,24 @@ body {
     transition: all var(--transition-speed) ease;
     display: flex;
     flex-direction: column;
+    overflow-y: auto;
 }
+
+/* Custom Scrollbar for Sidebar */
+.sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+.sidebar::-webkit-scrollbar-track {
+    background: transparent;
+}
+.sidebar::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+}
+.sidebar::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
 
 .sidebar .brand {
     padding: 0 24px 20px 24px;
