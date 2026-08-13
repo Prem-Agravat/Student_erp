@@ -20,7 +20,6 @@ function renderSidebar($activePage) {
             'dashboard' => ['admin/dashboard.php', 'fa-solid fa-chart-line', 'Dashboard'],
             'requests' => ['admin/school-requests.php', 'fa-solid fa-envelope-open-text', 'Pending Requests'],
             'schools' => ['admin/schools.php', 'fa-solid fa-school', 'All Schools'],
-            'logs' => ['admin/logs.php', 'fa-solid fa-list-check', 'Activity Logs'],
         ];
         
         foreach ($links as $key => $val) {
@@ -72,7 +71,6 @@ function renderSidebar($activePage) {
             // System Settings
             ['header', '', '', 'SYSTEM'],
             ['settings', 'school/settings.php', 'fa-solid fa-gears', 'School Profile'],
-            ['logs', 'school/logs.php', 'fa-solid fa-list-check', 'Activity Logs'],
         ];
         
         foreach ($menuItems as $item) {

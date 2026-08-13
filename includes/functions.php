@@ -18,36 +18,7 @@ function redirect($path) {
 }
 
 function logActivity($action, $description, $school_id = null) {
-    $db = getDBConnection();
-    
-    // Get IP address
-    $ip = $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0';
-    
-    // Check role and user_id based on session
-    $role = null;
-    $user_id = 0;
-    
-    if (isset($_SESSION['super_admin_id'])) {
-        $role = ROLE_SUPER_ADMIN;
-        $user_id = $_SESSION['super_admin_id'];
-    } elseif (isset($_SESSION['school_admin_id'])) {
-        $role = ROLE_SCHOOL_ADMIN;
-        $user_id = $_SESSION['school_admin_id'];
-        $school_id = $_SESSION['school_id'];
-    } elseif (isset($_SESSION['student_id'])) {
-        $role = ROLE_STUDENT;
-        $user_id = $_SESSION['student_id'];
-        $school_id = $_SESSION['school_id'];
-    }
-    
-    if ($role !== null) {
-        try {
-            $stmt = $db->prepare("INSERT INTO activity_logs (school_id, user_id, role, action, description, ip_address) VALUES (?, ?, ?, ?, ?, ?)");
-            $stmt->execute([$school_id, $user_id, $role, $action, $description, $ip]);
-        } catch (PDOException $e) {
-            // Silently ignore log insertion errors to prevent app crash
-        }
-    }
+    // Activity logging has been disabled
 }
 
 function generateStudentID($school_code, $academic_year_name, $count) {

@@ -397,20 +397,6 @@ CREATE TABLE IF NOT EXISTS `documents` (
   INDEX (`student_id`)
 ) ENGINE=InnoDB;
 
--- 21. Activity Logs Table
-CREATE TABLE IF NOT EXISTS `activity_logs` (
-  `id` INT AUTO_INCREMENT PRIMARY KEY,
-  `school_id` INT DEFAULT NULL, -- Can be NULL for super admin activities
-  `user_id` INT NOT NULL, -- references super_admins, school_admins, or students
-  `role` ENUM('SUPER_ADMIN', 'SCHOOL_ADMIN', 'STUDENT') NOT NULL,
-  `action` VARCHAR(100) NOT NULL,
-  `description` TEXT NOT NULL,
-  `ip_address` VARCHAR(45) NOT NULL,
-  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  INDEX (`school_id`),
-  INDEX (`created_at`)
-) ENGINE=InnoDB;
-
 -- Insert Seed Data (Default Super Admin)
 -- Passwords: admin123
 INSERT INTO `super_admins` (`id`, `username`, `email`, `password_hash`) VALUES
