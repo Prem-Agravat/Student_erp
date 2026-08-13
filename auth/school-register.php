@@ -187,7 +187,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label font-semibold">School Email <span class="text-danger">*</span></label>
-                                <input type="email" name="school_email" class="form-control rounded-3" required placeholder="info@school.edu.in">
+                                <input type="email" name="school_email" class="form-control rounded-3" required placeholder="school@gmail.com">
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label font-semibold">School Phone <span class="text-danger">*</span></label>
@@ -225,11 +225,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <div class="row g-3 mb-4">
                             <div class="col-md-4">
                                 <label class="form-label font-semibold">Principal Name <span class="text-danger">*</span></label>
-                                <input type="text" name="principal_name" class="form-control rounded-3" required placeholder="Dr. Rajesh Patel">
+                                <input type="text" name="principal_name" class="form-control rounded-3" required placeholder="Principal's Name">
                             </div>
                             <div class="col-md-4">
                                 <label class="form-label font-semibold">Principal Email <span class="text-danger">*</span></label>
-                                <input type="email" name="principal_email" class="form-control rounded-3" required placeholder="principal@school.edu.in">
+                                <input type="email" name="principal_email" class="form-control rounded-3" required placeholder="principal@gmail.com">
                             </div>
                             <div class="col-md-4">
                                 <label class="form-label font-semibold">Principal Phone <span class="text-danger">*</span></label>
@@ -246,7 +246,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label font-semibold">Admin Email <span class="text-danger">*</span></label>
-                                <input type="email" name="admin_email" class="form-control rounded-3" required placeholder="admin@example.com">
+                                <input type="email" name="admin_email" class="form-control rounded-3" required placeholder="admin@gmail.com">
                             </div>
                             <div class="col-md-4">
                                 <label class="form-label font-semibold">Username <span class="text-danger">*</span></label>

@@ -32,6 +32,8 @@ require_once 'includes/functions.php';
                 <ul class="navbar-nav ms-auto align-items-center gap-3">
                     <li class="nav-item"><a class="nav-link" href="#features">Features</a></li>
                     <li class="nav-item"><a class="nav-link" href="#about">Why SchoolERP</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#process">Process</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#faq">FAQ</a></li>
                     <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle btn btn-light px-3 py-2 border rounded-pill" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -71,6 +73,30 @@ require_once 'includes/functions.php';
             </div>
         </div>
     </header>
+
+    <!-- Statistics Counter Section -->
+    <section class="py-5 text-white shadow-sm" style="background: linear-gradient(135deg, #1e1b4b 0%, #4f46e5 100%);">
+        <div class="container py-4">
+            <div class="row g-4 text-center">
+                <div class="col-6 col-md-3">
+                    <h2 class="display-5 fw-bold mb-2">15+</h2>
+                    <p class="text-white-50 mb-0 font-semibold">Registered Schools</p>
+                </div>
+                <div class="col-6 col-md-3">
+                    <h2 class="display-5 fw-bold mb-2">5,000+</h2>
+                    <p class="text-white-50 mb-0 font-semibold">Active Students</p>
+                </div>
+                <div class="col-6 col-md-3">
+                    <h2 class="display-5 fw-bold mb-2">99.9%</h2>
+                    <p class="text-white-50 mb-0 font-semibold">Data Isolation Guarantee</p>
+                </div>
+                <div class="col-6 col-md-3">
+                    <h2 class="display-5 fw-bold mb-2">100%</h2>
+                    <p class="text-white-50 mb-0 font-semibold">Digitalized Operations</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <!-- Features Section -->
     <section id="features" class="py-5 bg-white">
@@ -163,6 +189,91 @@ require_once 'includes/functions.php';
         </div>
     </section>
 
+    <!-- How It Works Section -->
+    <section id="process" class="py-5 bg-white">
+        <div class="container py-5">
+            <div class="text-center mb-5 max-w-2xl mx-auto">
+                <h2 class="fw-bold mb-3">Get Started in 3 Simple Steps</h2>
+                <p class="text-secondary">SchoolERP is designed to get your institution online as quickly as possible.</p>
+            </div>
+            <div class="row g-4 text-center">
+                <div class="col-md-4">
+                    <div class="card h-100 p-4 border-0 shadow-sm glass-card">
+                        <div class="feature-icon bg-indigo-light text-indigo mx-auto mb-4 d-flex align-items-center justify-content-center rounded-circle" style="width: 60px; height: 60px; font-size: 24px; background: rgba(79,70,229,0.1);"><i class="fa-solid fa-school-flag"></i></div>
+                        <h5 class="fw-bold mb-2">1. Register Institution</h5>
+                        <p class="text-secondary mb-0">Fill in your school details, upload your logo, and generate your admin credentials instantly.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 p-4 border-0 shadow-sm glass-card">
+                        <div class="feature-icon bg-indigo-light text-indigo mx-auto mb-4 d-flex align-items-center justify-content-center rounded-circle" style="width: 60px; height: 60px; font-size: 24px; background: rgba(79,70,229,0.1);"><i class="fa-solid fa-file-csv"></i></div>
+                        <h5 class="fw-bold mb-2">2. Setup Academics</h5>
+                        <p class="text-secondary mb-0">Configure academic years, define classes/standards, assign subjects, and upload student lists in bulk via CSV.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 p-4 border-0 shadow-sm glass-card">
+                        <div class="feature-icon bg-indigo-light text-indigo mx-auto mb-4 d-flex align-items-center justify-content-center rounded-circle" style="width: 60px; height: 60px; font-size: 24px; background: rgba(79,70,229,0.1);"><i class="fa-solid fa-graduation-cap"></i></div>
+                        <h5 class="fw-bold mb-2">3. Run Operations</h5>
+                        <p class="text-secondary mb-0">Track daily student attendance, publish school notices, manage term examinations, and generate printable report cards.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="py-5 bg-light">
+        <div class="container py-5">
+            <div class="text-center mb-5 max-w-2xl mx-auto">
+                <h2 class="fw-bold mb-3">Frequently Asked Questions</h2>
+                <p class="text-secondary">Have questions about the platform? Check out the answers below.</p>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="accordion shadow-sm rounded-4 overflow-hidden border-0" id="faqAccordion">
+                        <div class="accordion-item border-0 border-bottom">
+                            <h2 class="accordion-header" id="headingOne">
+                                <button class="accordion-button fw-bold py-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    How is my school's database data kept secure and isolated?
+                                </button>
+                            </h2>
+                            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body text-secondary bg-white">
+                                    SchoolERP is built on a robust multi-school tenant architecture. Every record in our database is tagged with a unique <code>school_id</code>. Session authorization checks are strictly validated on every endpoint, preventing any cross-tenant data leaks.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item border-0 border-bottom">
+                            <h2 class="accordion-header" id="headingTwo">
+                                <button class="accordion-button collapsed fw-bold py-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                    Can we upload students in bulk?
+                                </button>
+                            </h2>
+                            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body text-secondary bg-white">
+                                    Yes! We provide a bulk CSV import template. Simply download the sample template CSV, paste your student records into the columns, and upload it to import hundreds of students instantly.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item border-0">
+                            <h2 class="accordion-header" id="headingThree">
+                                <button class="accordion-button collapsed fw-bold py-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                    Can students access their profiles, attendance, and exam scores?
+                                </button>
+                            </h2>
+                            <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body text-secondary bg-white">
+                                    Absolutely. Each student gets auto-generated login credentials. When they log in, they can view their class timetables, daily attendance reports, school notices, fee ledger logs, and published exam results/report cards.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Contact Section -->
     <section id="contact" class="py-5 bg-light">
         <div class="container py-5">
@@ -186,11 +297,11 @@ require_once 'includes/functions.php';
                         <div class="row g-3">
                             <div class="col-md-6">
                                 <label class="form-label font-semibold">Your Name</label>
-                                <input type="text" class="form-control rounded-3" placeholder="Prem Agravat">
+                                <input type="text" class="form-control rounded-3" placeholder="Your Name">
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label font-semibold">Email Address</label>
-                                <input type="email" class="form-control rounded-3" placeholder="prem@example.com">
+                                <input type="email" class="form-control rounded-3" placeholder="xyz@gmail.com">
                             </div>
                             <div class="col-12">
                                 <label class="form-label font-semibold">Message</label>
