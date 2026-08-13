@@ -45,13 +45,17 @@ $students = [];
 if ($std_id > 0 && $sec_id > 0) {
     // Fetch students in selected section
     $stmtStu = $db->prepare("
-        SELECT s.id, s.first_name, s.last_name, s.roll_number, att.status as att_status, att.remarks as att_remarks 
+        SELECT s.id, s.first_name, s.last_name, s.roll_number, 
+               att.status as att_status, att.remarks as att_remarks,
+               (SELECT status FROM attendance 
+                WHERE student_id = s.id AND date < ? 
+                ORDER BY date DESC LIMIT 1) as last_status
         FROM students s 
         LEFT JOIN attendance att ON s.id = att.student_id AND att.date = ? 
         WHERE s.school_id = ? AND s.standard_id = ? AND s.section_id = ? AND s.status = 'active' 
         ORDER BY s.roll_number ASC
     ");
-    $stmtStu->execute([$date, $school_id, $std_id, $sec_id]);
+    $stmtStu->execute([$date, $date, $school_id, $std_id, $sec_id]);
     $students = $stmtStu->fetchAll();
 }
 
@@ -88,13 +92,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
             
             // Reload list
             $stmtStu = $db->prepare("
-                SELECT s.id, s.first_name, s.last_name, s.roll_number, att.status as att_status, att.remarks as att_remarks 
+                SELECT s.id, s.first_name, s.last_name, s.roll_number, 
+                       att.status as att_status, att.remarks as att_remarks,
+                       (SELECT status FROM attendance 
+                        WHERE student_id = s.id AND date < ? 
+                        ORDER BY date DESC LIMIT 1) as last_status
                 FROM students s 
                 LEFT JOIN attendance att ON s.id = att.student_id AND att.date = ? 
                 WHERE s.school_id = ? AND s.standard_id = ? AND s.section_id = ? AND s.status = 'active' 
                 ORDER BY s.roll_number ASC
             ");
-            $stmtStu->execute([$date, $school_id, $std_id, $sec_id]);
+            $stmtStu->execute([$date, $date, $school_id, $std_id, $sec_id]);
             $students = $stmtStu->fetchAll();
             
         } catch (PDOException $e) {
@@ -174,10 +182,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                             </tr>
                         <?php else: ?>
                             <?php foreach ($students as $stu): ?>
-                                <?php $status = $stu['att_status'] ?? 'Present'; ?>
+                                <?php $status = $stu['att_status'] ?? ($stu['last_status'] ?? 'Present'); ?>
                                 <tr>
                                     <td><code>#<?= htmlspecialchars($stu['roll_number']) ?></code></td>
-                                    <td class="fw-bold"><?= htmlspecialchars($stu['first_name'] . ' ' . $stu['last_name']) ?></td>
+                                    <td>
+                                        <span class="fw-bold"><?= htmlspecialchars($stu['first_name'] . ' ' . $stu['last_name']) ?></span>
+                                        <?php if ($stu['att_status'] === null && $stu['last_status'] !== null): ?>
+                                            <?php
+                                            $badge_class = 'bg-secondary';
+                                            if ($stu['last_status'] === 'Present') $badge_class = 'bg-success bg-opacity-10 text-success';
+                                            elseif ($stu['last_status'] === 'Absent') $badge_class = 'bg-danger bg-opacity-10 text-danger';
+                                            elseif ($stu['last_status'] === 'Late') $badge_class = 'bg-warning bg-opacity-10 text-warning';
+                                            elseif ($stu['last_status'] === 'Leave') $badge_class = 'bg-info bg-opacity-10 text-info';
+                                            ?>
+                                            <small class="text-muted d-block" style="font-size: 11px; font-weight: normal;">
+                                                <i class="fa-solid fa-clock-rotate-left me-1"></i>Last marked: 
+                                                <span class="badge <?= $badge_class ?>"><?= htmlspecialchars($stu['last_status']) ?></span>
+                                            </small>
+                                        <?php endif; ?>
+                                    </td>
                                     <td>
                                         <div class="d-flex gap-3">
                                             <div class="form-check">
