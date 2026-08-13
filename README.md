@@ -26,25 +26,59 @@ Move the `/school-erp` folder into your XAMPP web root directory, normally locat
 2. Click **Start** next to the **Apache** module.
 3. Click **Start** next to the **MySQL** module.
 
-### Step C: Create and Import Database
+### Step C: Create and Import Database Schema
 1. Open your web browser and navigate to `http://localhost/phpmyadmin/`.
 2. Click on **New** in the left sidebar to create a new database.
 3. Set the database name to `school_erp` and click **Create**.
 4. Select the newly created `school_erp` database, click on the **Import** tab in the top menu.
-5. Click **Choose File** and select the SQL schema script located at:
+5. Click **Choose File** and select the SQL base schema script located at:
    `C:\xampp\htdocs\school-erp\database\school_erp.sql`
 6. Click **Import** at the bottom of the page to execute the SQL queries.
+
+### Step D: Seed the Database (Optional but Recommended)
+To populate the database with realistic sample data for immediate testing, you can choose one of the following seeding options:
+
+* **Option 1: Complete Realistic Seed (Radio Station Primary School)**
+  * Contains a fully configured school layout: 10 academic standards, sections, subjects, 30 students, 5 days of attendance logs, exams, and exam marks.
+  * **Via CLI**: Run `php database/seed_radio_station_school.php` in your terminal. This generates the SQL script and automatically seeds the database.
+  * **Via phpMyAdmin**: Select `school_erp` database, go to **Import**, and import `C:\xampp\htdocs\school-erp\database\seed_radio_station_school.sql`.
+
+* **Option 2: Minimal Demo Seed (St. Xavier's High School)**
+  * Contains 2 schools (one approved, one pending), sections, and a couple of students for a quick run.
+  * **Via phpMyAdmin**: Select `school_erp` database, go to **Import**, and import `C:\xampp\htdocs\school-erp\database\seed_demo.sql`.
 
 ---
 
 ## 3. Account Access & Testing Credentials
 
-The database comes pre-seeded with a default Super Admin account:
+The system includes pre-configured credentials depending on the seeder imported:
 
-### A. Super Admin Panel
+### A. Super Admin Panel (Manage all schools)
 * **Access Link**: `http://localhost/school-erp/auth/admin-login.php`
 * **Username**: `admin`
 * **Password**: `admin123`
+
+### B. Radio Station Primary School (Detailed Seed - Option 1)
+* **School Admin Panel**:
+  * **Access Link**: `http://localhost/school-erp/auth/school-login.php`
+  * **Username**: `rsps_admin`
+  * **Password**: `admin123`
+* **Student Portal**:
+  * **Access Link**: `http://localhost/school-erp/auth/student-login.php`
+  * **School**: Select `Radio Station Primary School`
+  * **Usernames**: `rsps0001` to `rsps0030` (e.g. `rsps0001`, `rsps0002`)
+  * **Password**: `student123`
+
+### C. St. Xavier's High School (Minimal Seed - Option 2)
+* **School Admin Panel**:
+  * **Access Link**: `http://localhost/school-erp/auth/school-login.php`
+  * **Username**: `stx_admin`
+  * **Password**: `admin123`
+* **Student Portal**:
+  * **Access Link**: `http://localhost/school-erp/auth/student-login.php`
+  * **School**: Select `St. Xavier's High School`
+  * **Usernames**: `stx0001`, `stx0002`
+  * **Password**: `student123`
 
 ---
 
@@ -83,7 +117,16 @@ To test the multi-school environment, execute this step-by-step registration flo
 
 ---
 
-## 5. Security Features
+## 5. Key Features & Quality of Life Improvements
+
+* **Smart Daily Attendance**: Daily attendance default values auto-populate from each student's last marked status, reducing workload for teachers. The UI displays a clock badge detailing their history.
+* **Scrollable Navigation Sidebar**: Enhanced scrollbars and sidebar viewport heights optimized for fluid desktop navigation.
+* **Data Tenant Isolation**: Queries validate `school_id` from secure session variables to prevent cross-tenant URL tampering (IDOR).
+* **Data Security & Hashing**: CSRF tokens protect post requests, PDO statements prevent SQL Injection, and passwords are hashed using Bcrypt (`password_hash()`).
+
+---
+
+## 6. Security Features
 
 * **Data Tenant Isolation**: Queries validate `school_id` from the secure session variables, preventing cross-tenant URL manipulation (IDOR).
 * **Cross-Site Request Forgery (CSRF)**: All POST requests enforce CSRF token verification.
