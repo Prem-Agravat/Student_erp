@@ -48,6 +48,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($school_name) || empty($school_code) || empty($school_email) || empty($admin_email) || empty($username) || empty($password)) {
         $message = "Please fill in all required fields.";
         $messageType = "danger";
+    } elseif (!filter_var($school_email, FILTER_VALIDATE_EMAIL)) {
+        $message = "Invalid school email address.";
+        $messageType = "danger";
+    } elseif (!filter_var($admin_email, FILTER_VALIDATE_EMAIL)) {
+        $message = "Invalid admin email address.";
+        $messageType = "danger";
+    } elseif (!empty($principal_email) && !filter_var($principal_email, FILTER_VALIDATE_EMAIL)) {
+        $message = "Invalid principal email address.";
+        $messageType = "danger";
+    } elseif (!preg_match('/^[0-9+\-\s]{7,20}$/', $school_phone)) {
+        $message = "School phone number must be between 7 and 20 digits/characters.";
+        $messageType = "danger";
+    } elseif (!preg_match('/^[0-9+\-\s]{7,20}$/', $principal_phone)) {
+        $message = "Principal phone number must be between 7 and 20 digits/characters.";
+        $messageType = "danger";
+    } elseif (strlen($password) < 6) {
+        $message = "Password must be at least 6 characters long.";
+        $messageType = "danger";
     } elseif ($password !== $confirm_password) {
         $message = "Passwords do not match.";
         $messageType = "danger";
@@ -191,7 +209,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label font-semibold">School Phone <span class="text-danger">*</span></label>
-                                <input type="text" name="school_phone" class="form-control rounded-3" required placeholder="e.g. +91 98250 12345">
+                                <input type="tel" name="school_phone" class="form-control rounded-3" required pattern="[0-9+\-\s]{7,20}" title="Enter a valid phone number (7-20 characters)" placeholder="e.g. +91 98250 12345" value="<?= htmlspecialchars($school_phone ?? '') ?>">
                             </div>
                             <div class="col-12">
                                 <label class="form-label font-semibold">School Address <span class="text-danger">*</span></label>
@@ -233,7 +251,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             </div>
                             <div class="col-md-4">
                                 <label class="form-label font-semibold">Principal Phone <span class="text-danger">*</span></label>
-                                <input type="text" name="principal_phone" class="form-control rounded-3" required placeholder="e.g. +91 98250 12345">
+                                <input type="tel" name="principal_phone" class="form-control rounded-3" required pattern="[0-9+\-\s]{7,20}" title="Enter a valid phone number (7-20 characters)" placeholder="e.g. +91 98250 12345" value="<?= htmlspecialchars($principal_phone ?? '') ?>">
                             </div>
                         </div>
 
@@ -254,11 +272,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             </div>
                             <div class="col-md-4">
                                 <label class="form-label font-semibold">Password <span class="text-danger">*</span></label>
-                                <input type="password" name="password" class="form-control rounded-3" required placeholder="Password">
+                                <input type="password" name="password" class="form-control rounded-3" required minlength="6" placeholder="Password">
                             </div>
                             <div class="col-md-4">
                                 <label class="form-label font-semibold">Confirm Password <span class="text-danger">*</span></label>
-                                <input type="password" name="confirm_password" class="form-control rounded-3" required placeholder="Confirm Password">
+                                <input type="password" name="confirm_password" class="form-control rounded-3" required minlength="6" placeholder="Confirm Password">
                             </div>
                         </div>
 
