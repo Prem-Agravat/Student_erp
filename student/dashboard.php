@@ -94,7 +94,7 @@ $notices = $stmtNotices->fetchAll();
                 <h4 class="fw-bold mb-1"><?= htmlspecialchars($student['first_name'] . ' ' . $student['last_name']) ?></h4>
                 <div class="text-muted mb-2">Student ID: <code><?= htmlspecialchars($student['student_id']) ?></code></div>
                 <div class="d-flex flex-wrap gap-2 justify-content-center justify-content-md-start">
-                    <span class="badge bg-indigo"><?= htmlspecialchars($student['standard_name']) ?> — <?= htmlspecialchars($student['section_name']) ?></span>
+                    <span class="badge bg-indigo"><?= htmlspecialchars($student['standard_name']) ?></span>
                     <span class="badge bg-secondary">Roll Number: #<?= htmlspecialchars($student['roll_number']) ?></span>
                     <span class="badge bg-light text-dark">Academic Year: <?= htmlspecialchars($student['academic_year_name']) ?></span>
                 </div>

@@ -39,8 +39,16 @@ $sections = $stmtSecs->fetchAll();
 
 // Filter values
 $exam_id = intval($_GET['exam_id'] ?? 0);
-$sec_id = intval($_GET['section_id'] ?? 0);
+$sec_id = 0;
 $subject_id = intval($_GET['subject_id'] ?? 0);
+if ($exam_id > 0) {
+    $stmtExStd = $db->prepare("SELECT standard_id FROM exams WHERE id = ? AND school_id = ?");
+    $stmtExStd->execute([$exam_id, $school_id]);
+    $std_id = intval($stmtExStd->fetchColumn());
+    if ($std_id > 0) {
+        $sec_id = getOrInsertDefaultSectionId($db, $school_id, $std_id);
+    }
+}
 
 $students = [];
 $exam_subject = null;
@@ -82,7 +90,7 @@ if ($exam_id > 0 && $sec_id > 0 && $subject_id > 0) {
     <!-- Filter Card -->
     <div class="card border-0 shadow-sm p-4 mb-4 glass-card">
         <form method="GET" class="row g-3 align-items-end" id="filterForm">
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <label class="form-label font-semibold">Select Exam <span class="text-danger">*</span></label>
                 <select name="exam_id" class="form-select" required id="examSelect">
                     <option value="">Choose Exam</option>
@@ -91,23 +99,14 @@ if ($exam_id > 0 && $sec_id > 0 && $subject_id > 0) {
                     <?php endforeach; ?>
                 </select>
             </div>
-            <div class="col-md-3">
-                <label class="form-label font-semibold">Select Section <span class="text-danger">*</span></label>
-                <select name="section_id" class="form-select" required id="secSelect">
-                    <option value="">Choose Section</option>
-                    <?php foreach ($sections as $sec): ?>
-                        <option value="<?= $sec['id'] ?>" data-std="<?= $sec['standard_id'] ?>" <?= $sec_id === $sec['id'] ? 'selected' : '' ?>><?= htmlspecialchars($sec['name']) ?></option>
-                    <?php endforeach; ?>
-                </select>
-            </div>
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <label class="form-label font-semibold">Select Subject <span class="text-danger">*</span></label>
                 <select name="subject_id" class="form-select" required id="subSelect">
                     <option value="">Choose Subject</option>
                     <!-- Dynamically populated via script -->
                 </select>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <button type="submit" class="btn btn-indigo w-100 rounded-pill"><i class="fa-solid fa-clipboard-list me-2"></i>Load Marks Sheet</button>
             </div>
         </form>
@@ -193,30 +192,12 @@ document.addEventListener("DOMContentLoaded", function() {
             });
     };
 
-    // Filter section select options by selected exam standard
-    const filterSections = () => {
-        const opt = examSelect.options[examSelect.selectedIndex];
-        if (opt && opt.value) {
-            const stdId = opt.getAttribute('data-std');
-            Array.from(secSelect.options).forEach(secOpt => {
-                if (secOpt.value === '' || secOpt.getAttribute('data-std') === stdId) {
-                    secOpt.style.display = 'block';
-                } else {
-                    secOpt.style.display = 'none';
-                }
-            });
-        }
-    };
-    
     examSelect.addEventListener('change', () => {
         loadSubjects();
-        filterSections();
-        secSelect.value = '';
     });
     
     if (examSelect.value !== '') {
         loadSubjects();
-        filterSections();
     }
     
     // AJAX saving for Marks

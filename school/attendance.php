@@ -38,11 +38,14 @@ $sections = $stmtSecs->fetchAll();
 
 // Handle filter inputs
 $std_id = intval($_GET['standard_id'] ?? 0);
-$sec_id = intval($_GET['section_id'] ?? 0);
+$sec_id = 0;
+if ($std_id > 0) {
+    $sec_id = getOrInsertDefaultSectionId($db, $school_id, $std_id);
+}
 $date = sanitizeInput($_GET['date'] ?? date('Y-m-d'));
 
 $students = [];
-if ($std_id > 0 && $sec_id > 0) {
+if ($std_id > 0) {
     // Fetch students in selected section
     $stmtStu = $db->prepare("
         SELECT s.id, s.first_name, s.last_name, s.roll_number, 
@@ -126,7 +129,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     <!-- Filter Card -->
     <div class="card border-0 shadow-sm p-4 mb-4 glass-card">
         <form method="GET" class="row g-3 align-items-end">
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <label class="form-label font-semibold">Standard <span class="text-danger">*</span></label>
                 <select name="standard_id" class="form-select" required id="stdSelect">
                     <option value="">Select Standard</option>
@@ -135,20 +138,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                     <?php endforeach; ?>
                 </select>
             </div>
-            <div class="col-md-3">
-                <label class="form-label font-semibold">Section <span class="text-danger">*</span></label>
-                <select name="section_id" class="form-select" required id="secSelect">
-                    <option value="">Select Section</option>
-                    <?php foreach ($sections as $sec): ?>
-                        <option value="<?= $sec['id'] ?>" data-std="<?= $sec['standard_id'] ?>" <?= $sec_id === $sec['id'] ? 'selected' : '' ?>><?= htmlspecialchars($sec['name']) ?></option>
-                    <?php endforeach; ?>
-                </select>
-            </div>
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <label class="form-label font-semibold">Date <span class="text-danger">*</span></label>
                 <input type="date" name="date" class="form-control" value="<?= htmlspecialchars($date) ?>" required max="<?= date('Y-m-d') ?>">
             </div>
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <button type="submit" class="btn btn-indigo w-100 rounded-pill"><i class="fa-solid fa-users-viewfinder me-2"></i>Load Students</button>
             </div>
         </form>
@@ -242,31 +236,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
 
 <script>
 document.addEventListener("DOMContentLoaded", function() {
-    // Filter sections selection dynamically
-    const stdSelect = document.getElementById('stdSelect');
-    const secSelect = document.getElementById('secSelect');
-    
-    if (stdSelect && secSelect) {
-        const originalOptions = Array.from(secSelect.options);
-        
-        const filterSections = () => {
-            const selectedStdId = stdSelect.value;
-            secSelect.innerHTML = '';
-            originalOptions.forEach(option => {
-                if (option.value === '' || option.getAttribute('data-std') === selectedStdId) {
-                    secSelect.appendChild(option.cloneNode(true));
-                }
-            });
-        };
-        
-        stdSelect.addEventListener('change', filterSections);
-        // Run once on load if standard already selected
-        if (stdSelect.value !== '') {
-            const currentVal = secSelect.value;
-            filterSections();
-            secSelect.value = currentVal;
-        }
-    }
+    // Filter sections selection dynamically removed
     
     // Mark All Present shortcut button
     const markAllBtn = document.getElementById('markAllPresent');

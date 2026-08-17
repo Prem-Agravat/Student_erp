@@ -39,7 +39,6 @@ function renderSidebar($activePage) {
             ['header', '', '', 'ACADEMIC'],
             ['academic_years', 'school/academic_years.php', 'fa-solid fa-calendar', 'Academic Years'],
             ['standards', 'school/standards.php', 'fa-solid fa-layer-group', 'Standards (Classes)'],
-            ['sections', 'school/sections.php', 'fa-solid fa-cubes', 'Sections'],
             ['subjects', 'school/subjects.php', 'fa-solid fa-book', 'Subjects'],
             ['timetable', 'school/timetable.php', 'fa-solid fa-clock', 'Timetable'],
             ['holidays', 'school/holidays.php', 'fa-solid fa-umbrella-beach', 'Holidays'],

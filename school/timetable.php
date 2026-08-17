@@ -34,7 +34,10 @@ $standards = $db->query("SELECT id, name FROM standards WHERE school_id = $schoo
 $sections = $db->query("SELECT id, name, standard_id FROM sections WHERE school_id = $school_id AND status = 'active' ORDER BY name ASC")->fetchAll();
 
 $std_id = intval($_GET['standard_id'] ?? 0);
-$sec_id = intval($_GET['section_id'] ?? 0);
+$sec_id = 0;
+if ($std_id > 0) {
+    $sec_id = getOrInsertDefaultSectionId($db, $school_id, $std_id);
+}
 
 // Fetch subjects for select list
 $subjects = [];
@@ -80,7 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 // Fetch current timetable grid data
 $timetableGrid = [];
-if ($std_id > 0 && $sec_id > 0) {
+if ($std_id > 0) {
     $stmtGrid = $db->prepare("
         SELECT t.*, sub.name as subject_name 
         FROM timetables t 
@@ -113,26 +116,17 @@ $periods = [1, 2, 3, 4, 5, 6, 7, 8];
     <!-- Class Selector -->
     <div class="card border-0 shadow-sm p-4 mb-4 glass-card">
         <form method="GET" class="row g-3 align-items-end" id="classSelectForm">
-            <div class="col-md-4">
+            <div class="col-md-6">
                 <label class="form-label font-semibold">Standard <span class="text-danger">*</span></label>
-                <select name="standard_id" class="form-select" required id="stdSelect" onchange="document.getElementById('secSelect').value = ''; document.getElementById('classSelectForm').submit();">
+                <select name="standard_id" class="form-select" required id="stdSelect" onchange="document.getElementById('classSelectForm').submit();">
                     <option value="">Select Standard</option>
                     <?php foreach ($standards as $std): ?>
                         <option value="<?= $std['id'] ?>" <?= $std_id === $std['id'] ? 'selected' : '' ?>><?= htmlspecialchars($std['name']) ?></option>
                     <?php endforeach; ?>
                 </select>
             </div>
-            <div class="col-md-4">
-                <label class="form-label font-semibold">Section <span class="text-danger">*</span></label>
-                <select name="section_id" class="form-select" required id="secSelect" onchange="document.getElementById('classSelectForm').submit();">
-                    <option value="">Select Section</option>
-                    <?php foreach ($sections as $sec): ?>
-                        <option value="<?= $sec['id'] ?>" data-std="<?= $sec['standard_id'] ?>" <?= $sec_id === $sec['id'] ? 'selected' : '' ?>><?= htmlspecialchars($sec['name']) ?></option>
-                    <?php endforeach; ?>
-                </select>
-            </div>
-            <div class="col-md-4">
-                <?php if ($std_id > 0 && $sec_id > 0): ?>
+            <div class="col-md-6">
+                <?php if ($std_id > 0): ?>
                     <button type="button" class="btn btn-indigo w-100 rounded-pill" data-bs-toggle="modal" data-bs-target="#addPeriodModal"><i class="fa-solid fa-calendar-plus me-2"></i>Add / Schedule Period</button>
                 <?php endif; ?>
             </div>
@@ -247,31 +241,6 @@ $periods = [1, 2, 3, 4, 5, 6, 7, 8];
     </div>
 </div>
 
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-    const stdSelect = document.getElementById('stdSelect');
-    const secSelect = document.getElementById('secSelect');
-    
-    if (stdSelect && secSelect) {
-        const originalOptions = Array.from(secSelect.options);
-        
-        const filterSections = () => {
-            const selectedStdId = stdSelect.value;
-            secSelect.innerHTML = '';
-            originalOptions.forEach(option => {
-                if (option.value === '' || option.getAttribute('data-std') === selectedStdId) {
-                    secSelect.appendChild(option.cloneNode(true));
-                }
-            });
-        };
-        
-        if (stdSelect.value !== '') {
-            const currentVal = secSelect.value;
-            filterSections();
-            secSelect.value = currentVal;
-        }
-    }
-});
-</script>
+<!-- JavaScript sections filter logic removed -->
 
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>

@@ -56,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     $state = sanitizeInput($_POST['state'] ?? '');
     $pincode = sanitizeInput($_POST['pincode'] ?? '');
     $standard_id = intval($_POST['standard_id'] ?? 0);
-    $section_id = intval($_POST['section_id'] ?? 0);
+    $section_id = getOrInsertDefaultSectionId($db, $school_id, $standard_id);
     $roll_number = intval($_POST['roll_number'] ?? 0);
     $admission_number = sanitizeInput($_POST['admission_number'] ?? '');
     $admission_date = sanitizeInput($_POST['admission_date'] ?? date('Y-m-d'));
@@ -69,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     
     $password = $_POST['password'] ?? 'student123'; // Default temp password
     
-    if (empty($first_name) || empty($last_name) || empty($dob) || $standard_id <= 0 || $section_id <= 0 || empty($parent_phone)) {
+    if (empty($first_name) || empty($last_name) || empty($dob) || $standard_id <= 0 || empty($parent_phone)) {
         $message = getAlert('danger', "Please fill in all required fields.");
     } else {
         // Validate roll number duplicates
@@ -158,10 +158,7 @@ if ($std_filter > 0) {
     $query .= " AND s.standard_id = ?";
     $params[] = $std_filter;
 }
-if ($sec_filter > 0) {
-    $query .= " AND s.section_id = ?";
-    $params[] = $sec_filter;
-}
+
 
 $query .= " ORDER BY std.display_order ASC, sec.name ASC, s.roll_number ASC";
 $stmt = $db->prepare($query);
@@ -183,25 +180,16 @@ $students = $stmt->fetchAll();
     <!-- Search and filter -->
     <div class="card border-0 shadow-sm p-4 mb-4 glass-card">
         <form method="GET" class="row g-3 align-items-end">
-            <div class="col-md-4">
+            <div class="col-md-5">
                 <label class="form-label font-semibold">Search Student</label>
                 <input type="text" name="search" class="form-control" placeholder="Search by name, ID, username..." value="<?= htmlspecialchars($search) ?>">
             </div>
-            <div class="col-md-3">
+            <div class="col-md-5">
                 <label class="form-label font-semibold">Standard</label>
                 <select name="standard_id" class="form-select">
                     <option value="">All Standards</option>
                     <?php foreach ($standards as $std): ?>
                         <option value="<?= $std['id'] ?>" <?= $std_filter === $std['id'] ? 'selected' : '' ?>><?= htmlspecialchars($std['name']) ?></option>
-                    <?php endforeach; ?>
-                </select>
-            </div>
-            <div class="col-md-3">
-                <label class="form-label font-semibold">Section</label>
-                <select name="section_id" class="form-select">
-                    <option value="">All Sections</option>
-                    <?php foreach ($sections as $sec): ?>
-                        <option value="<?= $sec['id'] ?>" <?= $sec_filter === $sec['id'] ? 'selected' : '' ?>><?= htmlspecialchars($sec['name']) ?></option>
                     <?php endforeach; ?>
                 </select>
             </div>
@@ -221,7 +209,7 @@ $students = $stmt->fetchAll();
                         <th>Roll No</th>
                         <th>Student ID</th>
                         <th>Student Name</th>
-                        <th>Class Division</th>
+                        <th>Standard</th>
                         <th>Parent Contact</th>
                         <th>Portal Username</th>
                         <th>Status</th>
@@ -241,7 +229,7 @@ $students = $stmt->fetchAll();
                                     <div class="fw-bold"><?= htmlspecialchars($stu['first_name'] . ' ' . $stu['last_name']) ?></div>
                                     <small class="text-muted"><?= htmlspecialchars($stu['gender']) ?></small>
                                 </td>
-                                <td><?= htmlspecialchars($stu['standard_name']) ?> — <?= htmlspecialchars($stu['section_name']) ?></td>
+                                <td><?= htmlspecialchars($stu['standard_name']) ?></td>
                                 <td>
                                     <div><?= htmlspecialchars($stu['father_name']) ?></div>
                                     <small class="text-muted"><?= htmlspecialchars($stu['parent_phone']) ?></small>
@@ -338,7 +326,7 @@ $students = $stmt->fetchAll();
                     <!-- Step 3: Academic details -->
                     <h6 class="fw-bold text-indigo mb-3 border-bottom pb-2">3. Academic Information</h6>
                     <div class="row g-3 mb-4">
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <label class="form-label font-semibold">Standard <span class="text-danger">*</span></label>
                             <select name="standard_id" class="form-select" required>
                                 <option value="">Select Standard</option>
@@ -347,16 +335,7 @@ $students = $stmt->fetchAll();
                                 <?php endforeach; ?>
                             </select>
                         </div>
-                        <div class="col-md-4">
-                            <label class="form-label font-semibold">Section <span class="text-danger">*</span></label>
-                            <select name="section_id" class="form-select" required>
-                                <option value="">Select Section</option>
-                                <?php foreach ($sections as $sec): ?>
-                                    <option value="<?= $sec['id'] ?>" data-std="<?= $sec['standard_id'] ?>"><?= htmlspecialchars($sec['name']) ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <label class="form-label font-semibold">Roll Number <span class="text-danger">*</span></label>
                             <input type="number" name="roll_number" class="form-control" required min="1" placeholder="e.g. 15">
                         </div>
@@ -414,30 +393,6 @@ $students = $stmt->fetchAll();
     </div>
 </div>
 
-<script>
-// Filter sections based on selected standard in the modal add-form
-document.addEventListener("DOMContentLoaded", function() {
-    const stdSelect = document.querySelector('select[name="standard_id"]');
-    const secSelect = document.querySelector('select[name="section_id"]');
-    
-    if (stdSelect && secSelect) {
-        const originalOptions = Array.from(secSelect.options);
-        
-        stdSelect.addEventListener('change', function() {
-            const selectedStdId = stdSelect.value;
-            
-            // Clear current options
-            secSelect.innerHTML = '';
-            
-            // Re-add matching options
-            originalOptions.forEach(option => {
-                if (option.value === '' || option.getAttribute('data-std') === selectedStdId) {
-                    secSelect.appendChild(option.cloneNode(true));
-                }
-            });
-        });
-    }
-});
-</script>
+<!-- Javascript filters removed since sections are auto-managed -->
 
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>

@@ -130,10 +130,7 @@ if ($student_id > 0) {
                         <td class="text-muted">Standard:</td>
                         <td class="fw-bold"><?= htmlspecialchars($student['standard_name']) ?></td>
                     </tr>
-                    <tr>
-                        <td class="text-muted">Section:</td>
-                        <td class="fw-bold">Division <?= htmlspecialchars($student['section_name']) ?></td>
-                    </tr>
+
                     <tr>
                         <td class="text-muted">Roll No:</td>
                         <td class="fw-bold">#<?= htmlspecialchars($student['roll_number']) ?></td>
@@ -191,7 +188,7 @@ $studentsList = $stmtStus->fetchAll();
                         <th>Roll No</th>
                         <th>Student ID</th>
                         <th>Student Name</th>
-                        <th>Class Division</th>
+                        <th>Standard</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -206,7 +203,7 @@ $studentsList = $stmtStus->fetchAll();
                                 <td><code>#<?= htmlspecialchars($stu['roll_number']) ?></code></td>
                                 <td><code><?= htmlspecialchars($stu['student_id']) ?></code></td>
                                 <td class="fw-bold"><?= htmlspecialchars($stu['first_name'] . ' ' . $stu['last_name']) ?></td>
-                                <td><?= htmlspecialchars($stu['standard_name']) ?> — <?= htmlspecialchars($stu['section_name']) ?></td>
+                                <td><?= htmlspecialchars($stu['standard_name']) ?></td>
                                 <td>
                                     <a href="id_cards.php?student_id=<?= $stu['id'] ?>" target="_blank" class="btn btn-indigo btn-sm rounded-pill"><i class="fa-solid fa-id-card me-1"></i>Generate Badge</a>
                                 </td>

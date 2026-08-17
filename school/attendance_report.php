@@ -36,10 +36,13 @@ $sections = $stmtSecs->fetchAll();
 
 // Handle filter inputs
 $std_id = intval($_GET['standard_id'] ?? 0);
-$sec_id = intval($_GET['section_id'] ?? 0);
+$sec_id = 0;
+if ($std_id > 0) {
+    $sec_id = getOrInsertDefaultSectionId($db, $school_id, $std_id);
+}
 
 $report = [];
-if ($std_id > 0 && $sec_id > 0) {
+if ($std_id > 0) {
     // Fetch student-wise attendance summary
     $stmtRep = $db->prepare("
         SELECT s.first_name, s.last_name, s.roll_number, s.student_id,
@@ -70,7 +73,7 @@ if ($std_id > 0 && $sec_id > 0) {
     <!-- Filter Card -->
     <div class="card border-0 shadow-sm p-4 mb-4 glass-card">
         <form method="GET" class="row g-3 align-items-end">
-            <div class="col-md-4">
+            <div class="col-md-6">
                 <label class="form-label font-semibold">Standard <span class="text-danger">*</span></label>
                 <select name="standard_id" class="form-select" required id="stdSelect">
                     <option value="">Select Standard</option>
@@ -79,22 +82,13 @@ if ($std_id > 0 && $sec_id > 0) {
                     <?php endforeach; ?>
                 </select>
             </div>
-            <div class="col-md-4">
-                <label class="form-label font-semibold">Section <span class="text-danger">*</span></label>
-                <select name="section_id" class="form-select" required id="secSelect">
-                    <option value="">Select Section</option>
-                    <?php foreach ($sections as $sec): ?>
-                        <option value="<?= $sec['id'] ?>" data-std="<?= $sec['standard_id'] ?>" <?= $sec_id === $sec['id'] ? 'selected' : '' ?>><?= htmlspecialchars($sec['name']) ?></option>
-                    <?php endforeach; ?>
-                </select>
-            </div>
-            <div class="col-md-4">
+            <div class="col-md-6">
                 <button type="submit" class="btn btn-indigo w-100 rounded-pill"><i class="fa-solid fa-chart-column me-2"></i>Generate Report</button>
             </div>
         </form>
     </div>
     
-    <?php if ($std_id > 0 && $sec_id > 0): ?>
+    <?php if ($std_id > 0): ?>
         <div class="card border-0 shadow-sm p-4 glass-card">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h5 class="fw-bold mb-0">Class Attendance Summary</h5>
@@ -151,32 +145,6 @@ if ($std_id > 0 && $sec_id > 0) {
     <?php endif; ?>
 </div>
 
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-    const stdSelect = document.getElementById('stdSelect');
-    const secSelect = document.getElementById('secSelect');
-    
-    if (stdSelect && secSelect) {
-        const originalOptions = Array.from(secSelect.options);
-        
-        const filterSections = () => {
-            const selectedStdId = stdSelect.value;
-            secSelect.innerHTML = '';
-            originalOptions.forEach(option => {
-                if (option.value === '' || option.getAttribute('data-std') === selectedStdId) {
-                    secSelect.appendChild(option.cloneNode(true));
-                }
-            });
-        };
-        
-        stdSelect.addEventListener('change', filterSections);
-        if (stdSelect.value !== '') {
-            const currentVal = secSelect.value;
-            filterSections();
-            secSelect.value = currentVal;
-        }
-    }
-});
-</script>
+<!-- JavaScript sections filter logic removed -->
 
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>

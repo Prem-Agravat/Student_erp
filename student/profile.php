@@ -172,15 +172,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <small class="text-muted d-block">Admission Number</small>
                                 <span class="fw-bold"><code><?= htmlspecialchars($student['admission_number']) ?></code></span>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                                 <small class="text-muted d-block">Class / Standard</small>
                                 <span class="fw-bold"><?= htmlspecialchars($student['standard_name']) ?></span>
                             </div>
-                            <div class="col-md-4">
-                                <small class="text-muted d-block">Section / Division</small>
-                                <span class="fw-bold"><?= htmlspecialchars($student['section_name']) ?></span>
-                            </div>
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                                 <small class="text-muted d-block">Roll Number</small>
                                 <span class="fw-bold">#<?= htmlspecialchars($student['roll_number']) ?></span>
                             </div>

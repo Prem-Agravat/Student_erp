@@ -48,6 +48,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             try {
                 $stmt = $db->prepare("INSERT INTO standards (school_id, academic_year_id, name, display_order, status) VALUES (?, ?, ?, ?, ?)");
                 $stmt->execute([$school_id, $active_year_id, $name, $display_order, $status]);
+                $std_id = $db->lastInsertId();
+                getOrInsertDefaultSectionId($db, $school_id, $std_id);
                 logActivity("Create Standard", "Created standard: $name in academic year: " . $activeYear['name']);
                 $message = getAlert('success', "Standard '$name' added successfully.");
             } catch (PDOException $e) {

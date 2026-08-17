@@ -129,7 +129,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['csv_file'])) {
                         $state = sanitizeInput($row[10] ?? '');
                         $pincode = sanitizeInput($row[11] ?? '');
                         $standard_id = intval($row[12] ?? 0);
-                        $section_id = intval($row[13] ?? 0);
+                        $section_id = getOrInsertDefaultSectionId($db, $school_id, $standard_id);
                         $roll_number = intval($row[14] ?? 0);
                         $admission_number = sanitizeInput($row[15] ?? '');
                         $father_name = sanitizeInput($row[16] ?? '');
@@ -137,7 +137,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['csv_file'])) {
                         $parent_phone = sanitizeInput($row[18] ?? '');
                         $parent_email = sanitizeInput($row[19] ?? '');
                         
-                        if (empty($first_name) || empty($last_name) || empty($dob) || $standard_id <= 0 || $section_id <= 0 || empty($parent_phone)) {
+                        if (empty($first_name) || empty($last_name) || empty($dob) || $standard_id <= 0 || empty($parent_phone)) {
                             $errorCount++;
                             continue;
                         }
@@ -215,7 +215,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['csv_file'])) {
                 <ol class="text-secondary ps-3 mb-4">
                     <li class="mb-2">Download the official sample CSV file below.</li>
                     <li class="mb-2">Insert data matching the headers carefully.</li>
-                    <li class="mb-2"><strong>`standard_id`</strong> and <strong>`section_id`</strong> must match standard IDs and section IDs in your dashboard tables!</li>
+                    <li class="mb-2"><strong>`standard_id`</strong> must match the standard ID in your dashboard tables! Section is automatically assigned.</li>
                     <li class="mb-2">Rows with missing required fields or duplicate roll numbers are automatically skipped to avoid corrupting records.</li>
                     <li class="mb-2">Temporary passwords will automatically default to <strong>`student123`</strong>.</li>
                 </ol>

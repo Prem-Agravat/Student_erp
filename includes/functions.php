@@ -53,3 +53,19 @@ function getAlert($type, $message) {
            htmlspecialchars($message) .
            '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
 }
+
+function getOrInsertDefaultSectionId($db, $school_id, $standard_id) {
+    // Check if a section already exists for this standard
+    $stmt = $db->prepare("SELECT id FROM sections WHERE school_id = ? AND standard_id = ? ORDER BY id ASC LIMIT 1");
+    $stmt->execute([$school_id, $standard_id]);
+    $section = $stmt->fetch();
+    
+    if ($section) {
+        return intval($section['id']);
+    }
+    
+    // If not, insert a default section 'A'
+    $stmtIns = $db->prepare("INSERT INTO sections (school_id, standard_id, name, capacity, status) VALUES (?, ?, 'A', 100, 'active')");
+    $stmtIns->execute([$school_id, $standard_id]);
+    return intval($db->lastInsertId());
+}

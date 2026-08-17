@@ -152,7 +152,6 @@ $noticesList = $stmtNotices->fetchAll();
                             <select name="target_audience" class="form-select" id="audienceSelect">
                                 <option value="All Students">All Students</option>
                                 <option value="Specific Standard">Specific Standard</option>
-                                <option value="Specific Section">Specific Section</option>
                             </select>
                         </div>
                         
@@ -161,15 +160,6 @@ $noticesList = $stmtNotices->fetchAll();
                             <select name="target_standard_id" class="form-select">
                                 <?php foreach ($standards as $std): ?>
                                     <option value="<?= $std['id'] ?>"><?= htmlspecialchars($std['name']) ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-                        
-                        <div class="col-md-4" id="targetSecGroup" style="display: none;">
-                            <label class="form-label font-semibold">Select Section</label>
-                            <select name="target_section_id" class="form-select">
-                                <?php foreach ($sections as $sec): ?>
-                                    <option value="<?= $sec['id'] ?>"><?= htmlspecialchars($sec['standard_name'] . ' - ' . $sec['name']) ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
@@ -193,20 +183,14 @@ $noticesList = $stmtNotices->fetchAll();
 document.addEventListener("DOMContentLoaded", function() {
     const audienceSelect = document.getElementById('audienceSelect');
     const targetStdGroup = document.getElementById('targetStdGroup');
-    const targetSecGroup = document.getElementById('targetSecGroup');
     
     if (audienceSelect) {
         audienceSelect.addEventListener('change', function() {
             const val = audienceSelect.value;
             if (val === 'All Students') {
                 targetStdGroup.style.display = 'none';
-                targetSecGroup.style.display = 'none';
             } else if (val === 'Specific Standard') {
                 targetStdGroup.style.display = 'block';
-                targetSecGroup.style.display = 'none';
-            } else if (val === 'Specific Section') {
-                targetStdGroup.style.display = 'none';
-                targetSecGroup.style.display = 'block';
             }
         });
     }

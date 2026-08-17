@@ -144,15 +144,11 @@ if ($student_id > 0) {
                     <small class="text-muted d-block">Student ID / Roll No</small>
                     <span class="fw-bold"><code><?= htmlspecialchars($student['student_id']) ?></code> / #<?= htmlspecialchars($student['roll_number']) ?></span>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <small class="text-muted d-block">Standard / Class</small>
                     <span class="fw-bold"><?= htmlspecialchars($exam['standard_name']) ?></span>
                 </div>
-                <div class="col-md-4">
-                    <small class="text-muted d-block">Section / division</small>
-                    <span class="fw-bold"><?= htmlspecialchars($student['section_name']) ?></span>
-                </div>
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <small class="text-muted d-block">Evaluation Examination</small>
                     <span class="fw-bold text-indigo"><?= htmlspecialchars($exam['exam_name']) ?></span>
                 </div>
@@ -273,14 +269,13 @@ $studentsList = $stmtStus->fetchAll();
                         <th>Roll No</th>
                         <th>Student ID</th>
                         <th>Student Name</th>
-                        <th>Section</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php if (empty($studentsList)): ?>
                         <tr>
-                            <td colspan="5" class="text-center text-muted py-4">No active students enrolled in this standard yet.</td>
+                             <td colspan="4" class="text-center text-muted py-4">No active students enrolled in this standard yet.</td>
                         </tr>
                     <?php else: ?>
                         <?php foreach ($studentsList as $stu): ?>
@@ -288,7 +283,7 @@ $studentsList = $stmtStus->fetchAll();
                                 <td><code>#<?= htmlspecialchars($stu['roll_number']) ?></code></td>
                                 <td><code><?= htmlspecialchars($stu['student_id']) ?></code></td>
                                 <td class="fw-bold"><?= htmlspecialchars($stu['first_name'] . ' ' . $stu['last_name']) ?></td>
-                                <td>Section <?= htmlspecialchars($stu['section_name']) ?></td>
+
                                 <td>
                                     <a href="report_cards.php?exam_id=<?= $exam_id ?>&student_id=<?= $stu['id'] ?>" target="_blank" class="btn btn-indigo btn-sm rounded-pill"><i class="fa-solid fa-print me-1"></i>Generate Report Card</a>
                                 </td>
