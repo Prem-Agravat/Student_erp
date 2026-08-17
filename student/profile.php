@@ -42,16 +42,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $email = sanitizeInput($_POST['email'] ?? '');
         $parent_email = sanitizeInput($_POST['parent_email'] ?? '');
         
-        try {
-            $stmtUpdate = $db->prepare("UPDATE students SET phone = ?, email = ?, parent_email = ? WHERE id = ? AND school_id = ?");
-            $stmtUpdate->execute([$phone, $email, $parent_email, $student_id, $school_id]);
-            logActivity("Update Profile", "Student updated contact information.");
-            $student['phone'] = $phone;
-            $student['email'] = $email;
-            $student['parent_email'] = $parent_email;
-            $message = getAlert('success', "Contact information updated successfully.");
-        } catch (PDOException $e) {
-            $message = getAlert('danger', "Failed to update profile: " . $e->getMessage());
+        if (empty($phone) || empty($email)) {
+            $message = getAlert('danger', "My Phone and My Email fields are required.");
+        } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $message = getAlert('danger', "Invalid student email format.");
+        } elseif (!empty($parent_email) && !filter_var($parent_email, FILTER_VALIDATE_EMAIL)) {
+            $message = getAlert('danger', "Invalid parent email format.");
+        } elseif (!preg_match("/^[0-9]{10}$/", $phone)) {
+            $message = getAlert('danger', "My Phone number must be exactly 10 digits.");
+        } else {
+            try {
+                $stmtUpdate = $db->prepare("UPDATE students SET phone = ?, email = ?, parent_email = ? WHERE id = ? AND school_id = ?");
+                $stmtUpdate->execute([$phone, $email, $parent_email, $student_id, $school_id]);
+                logActivity("Update Profile", "Student updated contact information.");
+                $student['phone'] = $phone;
+                $student['email'] = $email;
+                $student['parent_email'] = $parent_email;
+                $message = getAlert('success', "Contact information updated successfully.");
+            } catch (PDOException $e) {
+                $message = getAlert('danger', "Failed to update profile: " . $e->getMessage());
+            }
         }
     } elseif ($action === 'change_password') {
         $old_password = $_POST['old_password'] ?? '';
@@ -60,6 +70,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         if (empty($old_password) || empty($new_password) || empty($confirm_password)) {
             $message = getAlert('danger', "Please fill in all password fields.");
+        } elseif (strlen($new_password) < 6) {
+            $message = getAlert('danger', "New password must be at least 6 characters long.");
         } elseif ($new_password !== $confirm_password) {
             $message = getAlert('danger', "New passwords do not match.");
         } else {
@@ -198,11 +210,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div class="row g-3">
                         <div class="col-md-4">
                             <label class="form-label font-semibold">My Phone</label>
-                            <input type="text" name="phone" class="form-control" value="<?= htmlspecialchars($student['phone']) ?>">
+                            <input type="tel" name="phone" class="form-control" required pattern="[0-9]{10}" title="Please enter a valid 10-digit phone number" value="<?= htmlspecialchars($student['phone']) ?>">
                         </div>
                         <div class="col-md-4">
                             <label class="form-label font-semibold">My Email</label>
-                            <input type="email" name="email" class="form-control" value="<?= htmlspecialchars($student['email']) ?>">
+                            <input type="email" name="email" class="form-control" required value="<?= htmlspecialchars($student['email']) ?>">
                         </div>
                         <div class="col-md-4">
                             <label class="form-label font-semibold">Parent Email</label>
@@ -232,7 +244,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <code class="d-block mb-3">Portal Username: <?= htmlspecialchars($student['username']) ?></code>
             </div>
             
-            <div class="card border-0 shadow-sm p-4 glass-card">
+            <div class="card border-0 shadow-sm p-4 glass-card" style="background: linear-gradient(135deg, #f5f7ff 0%, #eef2ff 100%); border-left: 4px solid #6366f1;">
                 <h5 class="fw-bold mb-3"><i class="fa-solid fa-key text-indigo me-2"></i>Change Password</h5>
                 <form method="POST">
                     <?= getCSRFInput() ?>
@@ -243,13 +255,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
                     <div class="mb-3">
                         <label class="form-label">New Password</label>
-                        <input type="password" name="new_password" class="form-control" required placeholder="••••••••">
+                        <input type="password" name="new_password" class="form-control" required minlength="6" placeholder="••••••••">
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Confirm New Password</label>
-                        <input type="password" name="confirm_password" class="form-control" required placeholder="••••••••">
+                        <input type="password" name="confirm_password" class="form-control" required minlength="6" placeholder="••••••••">
                     </div>
-                    <button type="submit" class="btn btn-outline-indigo w-100 rounded-pill mt-2">Change Password</button>
+                    <button type="submit" class="btn btn-indigo w-100 rounded-pill mt-2">Change Password</button>
                 </form>
             </div>
         </div>
