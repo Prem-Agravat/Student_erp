@@ -58,7 +58,7 @@ $students = $stmtStudents->fetchAll();
     <!-- Print-only header -->
     <div class="d-none d-print-block text-center mb-4">
         <h3 class="fw-bold text-uppercase"><?= htmlspecialchars($_SESSION['school_name'] ?? 'School ERP') ?></h3>
-        <h5>Student Login Credentials List (Academic Year: <?= htmlspecialchars($activeYear['name']) ?>)</h5>
+        <h5>Student Login IDs List (Academic Year: <?= htmlspecialchars($activeYear['name']) ?>)</h5>
         <hr>
     </div>
 
@@ -66,7 +66,7 @@ $students = $stmtStudents->fetchAll();
         <div class="col-12 d-flex justify-content-between align-items-center flex-wrap gap-3">
             <div>
                 <h2 class="fw-bold mb-1">Student Credentials Directory</h2>
-                <p class="text-secondary mb-0">View or print list of student usernames and default login passwords (default: Father's Phone Number).</p>
+                <p class="text-secondary mb-0">View or print list of active student login IDs (default password is the student's Father's Phone Number).</p>
             </div>
             <div>
                 <button onclick="window.print()" class="btn btn-indigo rounded-pill px-4"><i class="fa-solid fa-print me-2"></i>Print Roster</button>
@@ -107,13 +107,12 @@ $students = $stmtStudents->fetchAll();
                         <th class="py-3">Student Name</th>
                         <th class="py-3">Standard</th>
                         <th class="py-3">Student ID (Username)</th>
-                        <th class="py-3">Default Password</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php if (empty($students)): ?>
                         <tr>
-                            <td colspan="5" class="text-center text-muted py-4">No active student records found matching the criteria.</td>
+                            <td colspan="4" class="text-center text-muted py-4">No active student records found matching the criteria.</td>
                         </tr>
                     <?php else: ?>
                         <?php foreach ($students as $stu): ?>
@@ -122,13 +121,6 @@ $students = $stmtStudents->fetchAll();
                                 <td class="fw-bold"><?= htmlspecialchars($stu['first_name'] . ' ' . $stu['last_name']) ?></td>
                                 <td><?= htmlspecialchars($stu['standard_name']) ?></td>
                                 <td><code class="bg-light text-indigo px-2 py-1 rounded"><?= htmlspecialchars($stu['username']) ?></code></td>
-                                <td>
-                                    <?php if (!empty($stu['parent_phone'])): ?>
-                                        <code class="bg-light text-dark px-2 py-1 rounded"><?= htmlspecialchars($stu['parent_phone']) ?></code>
-                                    <?php else: ?>
-                                        <span class="text-muted small">Not Configured</span>
-                                    <?php endif; ?>
-                                </td>
                             </tr>
                         <?php endforeach; ?>
                     <?php endif; ?>
