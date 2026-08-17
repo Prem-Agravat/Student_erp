@@ -7,3 +7,5 @@ assets/uploads/students/*
 !assets/uploads/students/.gitkeep
 .system_generated/
 *.log
+config/database.local.php
+

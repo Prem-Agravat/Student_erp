@@ -1,10 +1,16 @@
 <?php
 // C:\xampp\htdocs\school-erp\config\database.php
 
-define('DB_HOST', 'localhost');
-define('DB_USER', 'root');
-define('DB_PASS', '');
-define('DB_NAME', 'school_erp');
+// Include local configuration if it exists
+if (file_exists(__DIR__ . '/database.local.php')) {
+    require_once __DIR__ . '/database.local.php';
+}
+
+// Fallback database settings (if not defined in database.local.php)
+if (!defined('DB_HOST')) define('DB_HOST', 'localhost');
+if (!defined('DB_USER')) define('DB_USER', 'root');
+if (!defined('DB_PASS')) define('DB_PASS', '');
+if (!defined('DB_NAME')) define('DB_NAME', 'school_erp');
 
 function getDBConnection() {
     static $pdo = null;

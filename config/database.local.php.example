@@ -1,0 +1,11 @@
+<?php
+// C:\xampp\htdocs\school-erp\config\database.local.php.example
+// Copy this file to database.local.php and configure your database settings.
+
+// For InfinityFree, set the values generated in your hosting control panel.
+// For local XAMPP environment, you can use localhost, root, and school_erp.
+
+define('DB_HOST', 'localhost');
+define('DB_USER', 'root');
+define('DB_PASS', '');
+define('DB_NAME', 'school_erp');
