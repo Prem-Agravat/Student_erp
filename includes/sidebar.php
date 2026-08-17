@@ -61,9 +61,7 @@ function renderSidebar($activePage) {
             
 
             
-            // Documents
-            ['header', '', '', 'DOCUMENTS'],
-            ['documents', 'school/documents.php', 'fa-solid fa-folder-open', 'Student Documents'],
+
             
             // System Settings
             ['header', '', '', 'SYSTEM'],
@@ -93,7 +91,6 @@ function renderSidebar($activePage) {
             'exams' => ['student/exams.php', 'fa-solid fa-pen-to-square', 'Exam Schedule'],
             'timetable' => ['student/timetable.php', 'fa-solid fa-clock', 'Class Timetable'],
             'notices' => ['student/notices.php', 'fa-solid fa-bullhorn', 'Notices'],
-            'documents' => ['student/documents.php', 'fa-solid fa-folder-open', 'My Documents'],
         ];
         
         foreach ($links as $key => $val) {
