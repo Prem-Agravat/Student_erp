@@ -186,7 +186,7 @@ CREATE TABLE IF NOT EXISTS `attendance` (
   `student_id` INT NOT NULL,
   `academic_year_id` INT NOT NULL,
   `date` DATE NOT NULL,
-  `status` ENUM('Present', 'Absent', 'Late', 'Leave') NOT NULL,
+  `status` ENUM('Present', 'Absent') NOT NULL,
   `remarks` VARCHAR(255) DEFAULT NULL,
   `marked_by` INT NOT NULL, -- school_admins ID
   `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

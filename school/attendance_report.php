@@ -104,21 +104,19 @@ if ($std_id > 0) {
                             <th>Total Days</th>
                             <th>Present</th>
                             <th>Absent</th>
-                            <th>Late</th>
-                            <th>Leave</th>
                             <th>Ratio (%)</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php if (empty($report)): ?>
                             <tr>
-                                <td colspan="9" class="text-center text-muted py-4">No student records found.</td>
+                                <td colspan="7" class="text-center text-muted py-4">No student records found.</td>
                             </tr>
                         <?php else: ?>
                             <?php foreach ($report as $row): ?>
                                 <?php 
                                 $total = intval($row['total']);
-                                $present = intval($row['present']) + intval($row['late']); // counts late as present for ratio
+                                $present = intval($row['present']);
                                 $percent = $total > 0 ? round(($present / $total) * 100) : 100;
                                 ?>
                                 <tr>
@@ -128,8 +126,6 @@ if ($std_id > 0) {
                                     <td><?= $total ?> days</td>
                                     <td class="text-success"><?= intval($row['present']) ?></td>
                                     <td class="text-danger"><?= intval($row['absent']) ?></td>
-                                    <td class="text-warning"><?= intval($row['late']) ?></td>
-                                    <td class="text-info"><?= intval($row['leave_count']) ?></td>
                                     <td>
                                         <span class="badge <?= $percent >= 75 ? 'bg-success' : 'bg-danger' ?> font-semibold">
                                             <?= $percent ?>%

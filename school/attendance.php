@@ -69,7 +69,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     }
     
     $attendance_data = $_POST['attendance'] ?? []; // key: student_id, val: status
-    $remarks_data = $_POST['remarks'] ?? []; // key: student_id, val: remark
     $admin_id = $_SESSION['school_admin_id'];
     
     if (empty($attendance_data)) {
@@ -85,8 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
             ");
             
             foreach ($attendance_data as $stu_id => $status) {
-                $remark = sanitizeInput($remarks_data[$stu_id] ?? '');
-                $stmtUpsert->execute([$school_id, intval($stu_id), $activeYear['id'], $date, $status, $remark, $admin_id]);
+                $stmtUpsert->execute([$school_id, intval($stu_id), $activeYear['id'], $date, $status, '', $admin_id]);
             }
             
             $db->commit();
@@ -166,13 +164,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                             <th style="width: 100px;">Roll No</th>
                             <th>Student Name</th>
                             <th>Attendance Status</th>
-                            <th>Remarks (Optional)</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php if (empty($students)): ?>
                             <tr>
-                                <td colspan="4" class="text-center text-muted py-4">No active students registered in this section yet.</td>
+                                <td colspan="3" class="text-center text-muted py-4">No active students registered in this section yet.</td>
                             </tr>
                         <?php else: ?>
                             <?php foreach ($students as $stu): ?>
@@ -186,8 +183,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                                             $badge_class = 'bg-secondary';
                                             if ($stu['last_status'] === 'Present') $badge_class = 'bg-success bg-opacity-10 text-success';
                                             elseif ($stu['last_status'] === 'Absent') $badge_class = 'bg-danger bg-opacity-10 text-danger';
-                                            elseif ($stu['last_status'] === 'Late') $badge_class = 'bg-warning bg-opacity-10 text-warning';
-                                            elseif ($stu['last_status'] === 'Leave') $badge_class = 'bg-info bg-opacity-10 text-info';
                                             ?>
                                             <small class="text-muted d-block" style="font-size: 11px; font-weight: normal;">
                                                 <i class="fa-solid fa-clock-rotate-left me-1"></i>Last marked: 
@@ -205,18 +200,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                                                 <input class="form-check-input" type="radio" name="attendance[<?= $stu['id'] ?>]" value="Absent" id="abs<?= $stu['id'] ?>" <?= $status === 'Absent' ? 'checked' : '' ?>>
                                                 <label class="form-check-label text-danger font-semibold" for="abs<?= $stu['id'] ?>">Absent</label>
                                             </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="radio" name="attendance[<?= $stu['id'] ?>]" value="Late" id="late<?= $stu['id'] ?>" <?= $status === 'Late' ? 'checked' : '' ?>>
-                                                <label class="form-check-label text-warning font-semibold" for="late<?= $stu['id'] ?>">Late</label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="radio" name="attendance[<?= $stu['id'] ?>]" value="Leave" id="leave<?= $stu['id'] ?>" <?= $status === 'Leave' ? 'checked' : '' ?>>
-                                                <label class="form-check-label text-info font-semibold" for="leave<?= $stu['id'] ?>">Leave</label>
-                                            </div>
                                         </div>
-                                    </td>
-                                    <td>
-                                        <input type="text" name="remarks[<?= $stu['id'] ?>]" class="form-control form-control-sm" placeholder="Reason if absent/leave" value="<?= htmlspecialchars($stu['att_remarks'] ?? '') ?>">
                                     </td>
                                 </tr>
                             <?php endforeach; ?>

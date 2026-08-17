@@ -14,9 +14,7 @@ $stmtSum = $db->prepare("
     SELECT 
         COUNT(id) as total,
         SUM(CASE WHEN status='Present' THEN 1 ELSE 0 END) as present,
-        SUM(CASE WHEN status='Absent' THEN 1 ELSE 0 END) as absent,
-        SUM(CASE WHEN status='Late' THEN 1 ELSE 0 END) as late,
-        SUM(CASE WHEN status='Leave' THEN 1 ELSE 0 END) as leave_count
+        SUM(CASE WHEN status='Absent' THEN 1 ELSE 0 END) as absent
     FROM attendance 
     WHERE student_id = ? AND school_id = ?
 ");
@@ -26,10 +24,8 @@ $metrics = $stmtSum->fetch();
 $total = intval($metrics['total']);
 $present = intval($metrics['present']);
 $absent = intval($metrics['absent']);
-$late = intval($metrics['late']);
-$leave = intval($metrics['leave_count']);
 
-$percent = $total > 0 ? round((($present + $late) / $total) * 100) : 100;
+$percent = $total > 0 ? round(($present / $total) * 100) : 100;
 
 // Fetch daily logs
 $stmtLogs = $db->prepare("SELECT date, status, remarks FROM attendance WHERE student_id = ? AND school_id = ? ORDER BY date DESC LIMIT 60");
@@ -57,25 +53,17 @@ $logs = $stmtLogs->fetchAll();
         <div class="col-md-9">
             <div class="card border-0 shadow-sm glass-card p-4 h-100 d-flex flex-column justify-content-center">
                 <div class="row text-center g-3">
-                    <div class="col-md-3 col-6 border-end">
+                    <div class="col-md-4 col-12 border-end">
                         <small class="text-muted d-block font-semibold">Total Days Tracked</small>
                         <h3 class="fw-bold mt-1 text-dark mb-0"><?= $total ?> days</h3>
                     </div>
-                    <div class="col-md-3 col-6 border-end">
+                    <div class="col-md-4 col-6 border-end">
                         <small class="text-muted d-block font-semibold">Days Present</small>
                         <h3 class="fw-bold mt-1 text-success mb-0"><?= $present ?> days</h3>
                     </div>
-                    <div class="col-md-2 col-4 border-end">
+                    <div class="col-md-4 col-6">
                         <small class="text-muted d-block font-semibold">Absent</small>
                         <h3 class="fw-bold mt-1 text-danger mb-0"><?= $absent ?> days</h3>
-                    </div>
-                    <div class="col-md-2 col-4 border-end">
-                        <small class="text-muted d-block font-semibold">Late Arrivals</small>
-                        <h3 class="fw-bold mt-1 text-warning mb-0"><?= $late ?> days</h3>
-                    </div>
-                    <div class="col-md-2 col-4">
-                        <small class="text-muted d-block font-semibold">Leaves</small>
-                        <h3 class="fw-bold mt-1 text-info mb-0"><?= $leave ?> days</h3>
                     </div>
                 </div>
             </div>
@@ -92,13 +80,12 @@ $logs = $stmtLogs->fetchAll();
                         <th>Date</th>
                         <th>Day</th>
                         <th>Status</th>
-                        <th>Remarks / Reason</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php if (empty($logs)): ?>
                         <tr>
-                            <td colspan="4" class="text-center text-muted py-4">No attendance checks logged yet.</td>
+                            <td colspan="3" class="text-center text-muted py-4">No attendance checks logged yet.</td>
                         </tr>
                     <?php else: ?>
                         <?php foreach ($logs as $log): ?>
@@ -107,11 +94,10 @@ $logs = $stmtLogs->fetchAll();
                                 <td><?= date('l', strtotime($log['date'])) ?></td>
                                 <td>
                                     <?php 
-                                    $bg = $log['status'] === 'Present' ? 'bg-success' : ($log['status'] === 'Absent' ? 'bg-danger' : ($log['status'] === 'Late' ? 'bg-warning' : 'bg-info'));
+                                    $bg = $log['status'] === 'Present' ? 'bg-success' : 'bg-danger';
                                     ?>
                                     <span class="badge <?= $bg ?> px-3 py-2 font-semibold" style="font-size: 12px;"><?= htmlspecialchars($log['status']) ?></span>
                                 </td>
-                                <td><?= htmlspecialchars($log['remarks'] ?: '—') ?></td>
                             </tr>
                         <?php endforeach; ?>
                     <?php endif; ?>
