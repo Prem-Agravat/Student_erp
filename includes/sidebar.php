@@ -59,9 +59,7 @@ function renderSidebar($activePage) {
             ['header', '', '', 'COMMUNICATION'],
             ['notices', 'school/notices.php', 'fa-solid fa-bullhorn', 'Noticeboard'],
             
-            // Finance
-            ['header', '', '', 'FINANCE'],
-            ['fees', 'school/fees.php', 'fa-solid fa-money-check-dollar', 'Fees Management'],
+
             
             // Documents
             ['header', '', '', 'DOCUMENTS'],
@@ -95,7 +93,6 @@ function renderSidebar($activePage) {
             'exams' => ['student/exams.php', 'fa-solid fa-pen-to-square', 'Exam Schedule'],
             'timetable' => ['student/timetable.php', 'fa-solid fa-clock', 'Class Timetable'],
             'notices' => ['student/notices.php', 'fa-solid fa-bullhorn', 'Notices'],
-            'fees' => ['student/fees.php', 'fa-solid fa-receipt', 'Fees Ledger'],
             'documents' => ['student/documents.php', 'fa-solid fa-folder-open', 'My Documents'],
         ];
         
