@@ -67,7 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     $parent_phone = sanitizeInput($_POST['parent_phone'] ?? '');
     $parent_email = sanitizeInput($_POST['parent_email'] ?? '');
     
-    $password = $_POST['password'] ?? 'student123'; // Default temp password
+    $password = !empty($_POST['password']) ? $_POST['password'] : $parent_phone; // Default temp password to parent's phone number
     
     if (empty($first_name) || empty($last_name) || empty($dob) || $standard_id <= 0 || empty($parent_phone)) {
         $message = getAlert('danger', "Please fill in all required fields.");
@@ -379,8 +379,8 @@ $students = $stmt->fetchAll();
                     <div class="row g-3">
                         <div class="col-md-6">
                             <label class="form-label font-semibold">Temporary Portal Password</label>
-                            <input type="password" name="password" class="form-control" value="student123" placeholder="Default: student123">
-                            <small class="text-muted">Students can reset their password on their dashboard profile later.</small>
+                            <input type="text" name="password" class="form-control" placeholder="Leave blank to use Parent's Phone number">
+                            <small class="text-muted">Leave blank to use the Father's/Parent's phone number as default. Students can reset this on their profile later.</small>
                         </div>
                     </div>
                 </div>

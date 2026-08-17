@@ -47,6 +47,7 @@ function renderSidebar($activePage) {
             ['header', '', '', 'STUDENTS'],
             ['students', 'school/students.php', 'fa-solid fa-user-graduate', 'Manage Students'],
             ['import_students', 'school/students_import.php', 'fa-solid fa-file-import', 'Import Students'],
+            ['student_credentials', 'school/student_credentials.php', 'fa-solid fa-id-card-clip', 'Student Credentials List'],
             
             // Academic records
             ['header', '', '', 'ACADEMIC RECORDS'],

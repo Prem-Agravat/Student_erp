@@ -154,7 +154,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['csv_file'])) {
                         $studentCount++;
                         $student_id = generateStudentID($school_code, $activeYear['name'], $studentCount - 1);
                         $username = strtolower($school_code) . str_pad($studentCount, 4, '0', STR_PAD_LEFT);
-                        $password_hash = password_hash('student123', PASSWORD_BCRYPT);
+                        $password_hash = password_hash($parent_phone, PASSWORD_BCRYPT);
                         
                         $stmtInsert->execute([
                             $school_id, $student_id, $first_name, $middle_name, $last_name, $gender, $dob, $blood_group,
