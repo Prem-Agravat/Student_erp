@@ -147,55 +147,6 @@ foreach ($standards as $std) {
                                         </td>
                                         <td>
                                             <button class="btn btn-outline-indigo btn-sm rounded-pill" data-bs-toggle="modal" data-bs-target="#configModal<?= $ex['id'] ?>"><i class="fa-solid fa-gear me-1"></i>Configure Subjects</button>
-                                            
-                                            <!-- Configure Subjects Modal -->
-                                            <div class="modal fade" id="configModal<?= $ex['id'] ?>" tabindex="-1">
-                                                <div class="modal-dialog">
-                                                    <form method="POST">
-                                                        <?= getCSRFInput() ?>
-                                                        <input type="hidden" name="action" value="configure_subject">
-                                                        <input type="hidden" name="exam_id" value="<?= $ex['id'] ?>">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title fw-bold">Map Subjects to <?= htmlspecialchars($ex['exam_name']) ?></h5>
-                                                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                                            </div>
-                                                            <div class="modal-body text-start">
-                                                                <div class="mb-3">
-                                                                    <label class="form-label font-semibold">Select Subject <span class="text-danger">*</span></label>
-                                                                    <select name="subject_id" class="form-select" required>
-                                                                        <option value="">Choose Subject</option>
-                                                                        <?php 
-                                                                        $subs = $subjectsByStd[$ex['standard_id']] ?? [];
-                                                                        foreach ($subs as $sub): 
-                                                                        ?>
-                                                                            <option value="<?= $sub['id'] ?>"><?= htmlspecialchars($sub['name']) ?></option>
-                                                                        <?php endforeach; ?>
-                                                                    </select>
-                                                                </div>
-                                                                <div class="row mb-3">
-                                                                    <div class="col-md-6">
-                                                                        <label class="form-label font-semibold">Max Marks <span class="text-danger">*</span></label>
-                                                                        <input type="number" name="max_marks" class="form-control" value="100" min="1" step="0.5" required>
-                                                                    </div>
-                                                                    <div class="col-md-6">
-                                                                        <label class="form-label font-semibold">Passing Marks <span class="text-danger">*</span></label>
-                                                                        <input type="number" name="passing_marks" class="form-control" value="40" min="1" step="0.5" required>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="mb-3">
-                                                                    <label class="form-label font-semibold">Exam Date</label>
-                                                                    <input type="date" name="exam_date" class="form-control">
-                                                                </div>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
-                                                                    <button type="submit" class="btn btn-indigo">Save Config</button>
-                                                            </div>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                            </div>
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>
@@ -256,5 +207,56 @@ foreach ($standards as $std) {
         </form>
     </div>
 </div>
+
+<?php foreach ($examsList as $ex): ?>
+    <!-- Configure Subjects Modal -->
+    <div class="modal fade" id="configModal<?= $ex['id'] ?>" tabindex="-1">
+        <div class="modal-dialog">
+            <form method="POST">
+                <?= getCSRFInput() ?>
+                <input type="hidden" name="action" value="configure_subject">
+                <input type="hidden" name="exam_id" value="<?= $ex['id'] ?>">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title fw-bold">Map Subjects to <?= htmlspecialchars($ex['exam_name']) ?></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body text-start">
+                        <div class="mb-3">
+                            <label class="form-label font-semibold">Select Subject <span class="text-danger">*</span></label>
+                            <select name="subject_id" class="form-select" required>
+                                <option value="">Choose Subject</option>
+                                <?php 
+                                $subs = $subjectsByStd[$ex['standard_id']] ?? [];
+                                foreach ($subs as $sub): 
+                                ?>
+                                    <option value="<?= $sub['id'] ?>"><?= htmlspecialchars($sub['name']) ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label font-semibold">Max Marks <span class="text-danger">*</span></label>
+                                <input type="number" name="max_marks" class="form-control" value="100" min="1" step="0.5" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label font-semibold">Passing Marks <span class="text-danger">*</span></label>
+                                <input type="number" name="passing_marks" class="form-control" value="40" min="1" step="0.5" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label font-semibold">Exam Date</label>
+                            <input type="date" name="exam_date" class="form-control">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-indigo">Save Config</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+<?php endforeach; ?>
 
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>
