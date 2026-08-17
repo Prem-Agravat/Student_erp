@@ -41,7 +41,6 @@ function renderSidebar($activePage) {
             ['standards', 'school/standards.php', 'fa-solid fa-layer-group', 'Standards (Classes)'],
             ['subjects', 'school/subjects.php', 'fa-solid fa-book', 'Subjects'],
             ['timetable', 'school/timetable.php', 'fa-solid fa-clock', 'Timetable'],
-            ['holidays', 'school/holidays.php', 'fa-solid fa-umbrella-beach', 'Holidays'],
             
             // Student group
             ['header', '', '', 'STUDENTS'],

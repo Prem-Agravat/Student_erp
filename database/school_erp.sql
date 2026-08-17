@@ -310,23 +310,6 @@ CREATE TABLE IF NOT EXISTS `timetables` (
   INDEX (`section_id`)
 ) ENGINE=InnoDB;
 
--- 16. Holidays Table
-CREATE TABLE IF NOT EXISTS `holidays` (
-  `id` INT AUTO_INCREMENT PRIMARY KEY,
-  `school_id` INT NOT NULL,
-  `academic_year_id` INT NOT NULL,
-  `name` VARCHAR(100) NOT NULL,
-  `description` TEXT DEFAULT NULL,
-  `start_date` DATE NOT NULL,
-  `end_date` DATE NOT NULL,
-  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  FOREIGN KEY (`school_id`) REFERENCES `schools`(`id`) ON DELETE CASCADE,
-  FOREIGN KEY (`academic_year_id`) REFERENCES `academic_years`(`id`) ON DELETE CASCADE,
-  INDEX (`school_id`),
-  INDEX (`academic_year_id`)
-) ENGINE=InnoDB;
-
 -- 17. Fee Categories Table
 CREATE TABLE IF NOT EXISTS `fee_categories` (
   `id` INT AUTO_INCREMENT PRIMARY KEY,
